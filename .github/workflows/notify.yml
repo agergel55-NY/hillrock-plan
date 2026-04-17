@@ -10,13 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
+        uses: actions/checkout@v3
 
       - name: Get commit message
         id: commit
-        run: echo "msg=$(git log -1 --pretty=%B)" >> $GITHUB_OUTPUT
+        run: |
+          MSG=$(git log -1 --pretty=%s)
+          echo "msg=$MSG" >> $GITHUB_OUTPUT
 
       - name: Send notification email
         uses: dawidd6/action-send-mail@v3
@@ -25,22 +25,22 @@ jobs:
           server_port: 587
           username: agergel55@gmail.com
           password: ${{ secrets.GMAIL_APP_PASSWORD }}
-          subject: "Hillrock 2026 Plan Updated — ${{ steps.commit.outputs.msg }}"
+          subject: "Hillrock 2026 Plan Updated"
           to: jp@jpbrandadvisors.com,dr@jpbrandadvisors.com,ap@jpbrandadvisors.com
-          from: "Andy Gergel — JP Brand Advisors <agergel55@gmail.com>"
+          from: "Andy Gergel - JP Brand Advisors <agergel55@gmail.com>"
           html_body: |
             <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
               <div style="background:#1F3B6B;padding:20px 24px">
                 <div style="color:#C4973B;font-weight:700;font-size:18px">HILLROCK ESTATE DISTILLERY</div>
-                <div style="color:#A0B8D8;font-size:12px;margin-top:4px">2026 National Brand Plan — Update Notification</div>
+                <div style="color:#A0B8D8;font-size:12px;margin-top:4px">2026 National Brand Plan - Update Notification</div>
               </div>
               <div style="padding:24px;background:#F8F9FC;border:1px solid #DDE3EE">
-                <p style="margin:0 0 16px;font-size:14px;color:#333">The Hillrock 2026 Brand Plan has been updated. View the latest version using the link below.</p>
+                <p style="margin:0 0 16px;font-size:14px;color:#333">The Hillrock 2026 Brand Plan has been updated.</p>
                 <div style="background:#FFF;border-left:4px solid #1F3B6B;padding:12px 16px;margin-bottom:20px;font-size:13px;color:#555">
                   <strong style="color:#1F3B6B">Update note:</strong><br>
                   ${{ steps.commit.outputs.msg }}
                 </div>
-                <a href="https://agergel55-ny.github.io/hillrock-plan" style="display:inline-block;background:#1F3B6B;color:#FFF;padding:12px 28px;text-decoration:none;font-weight:700;font-size:14px;border-radius:2px">View Plan Dashboard →</a>
-                <p style="margin:20px 0 0;font-size:11px;color:#999">JP Brand Advisors · Andy Gergel, National Brand Director · Read-only view</p>
+                <a href="https://agergel55-ny.github.io/hillrock-plan" style="display:inline-block;background:#1F3B6B;color:#FFF;padding:12px 28px;text-decoration:none;font-weight:700;font-size:14px">View Plan Dashboard</a>
+                <p style="margin:20px 0 0;font-size:11px;color:#999">JP Brand Advisors - Andy Gergel, National Brand Director - Read-only view</p>
               </div>
             </div>
